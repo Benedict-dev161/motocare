@@ -13,6 +13,10 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+        html, body {
+        overflow-x: hidden;
+        }
+        
         body {
             background: #f4f7fb;
             color: #1f2937;
@@ -290,7 +294,6 @@
             <a href="#">Home</a>
             <a href="#">Fitur</a>
             <a href="#">Perawatan</a>
-            <a href="#">Login</a>
         </div>
     </nav>
 
@@ -309,8 +312,8 @@
             </p>
 
             <div class="buttons">
-                <a href="#" class="btn-primary">Mulai Sekarang</a>
-                <a href="#" class="btn-secondary">Lihat Fitur</a>
+                <a href="{{ route('maintenance.create') }}" class="btn-primary">Mulai Sekarang</a>
+                <a href="#fitur" class="btn-secondary">Lihat Fitur</a>
             </div>
         </div>
 
@@ -359,7 +362,7 @@
         </div>
     </section>
 
-    <section class="features">
+    <section class="features" id="fitur">
         <div class="section-title">
             <h2>Fitur Utama MotoCare</h2>
             <p>Sistem sederhana untuk membantu pengguna menjaga kondisi motor tetap optimal.</p>
