@@ -243,6 +243,19 @@
                 width: 100%;
                 text-align: center;
             }
+            .alert-error {
+                background: #fee2e2;
+                border: 1px solid #fecaca;
+                color: #991b1b;
+                padding: 16px 18px;
+                border-radius: 12px;
+                margin-bottom: 24px;
+            }
+
+            .alert-error ul {
+                margin-left: 20px;
+                margin-top: 8px;
+            }
         }
     </style>
 </head>
@@ -265,7 +278,18 @@
             </p>
         </div>
 
-        <form class="form-card" action="#" method="POST">
+        @if ($errors->any())
+            <div class="alert-error">
+                <strong>Data belum valid.</strong>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form class="form-card" action="{{ route('maintenance.store') }}" method="POST">
             @csrf
 
             <div class="form-section">
