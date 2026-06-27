@@ -1,58 +1,216 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MotoCare - Sistem Pengingat Perawatan Motor
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+MotoCare adalah aplikasi web berbasis Laravel yang digunakan untuk membantu pengguna mencatat riwayat perawatan motor, memantau kilometer terkini, dan menghitung jadwal perawatan berikutnya secara otomatis.
 
-## About Laravel
+Proyek ini dibuat sebagai proyek mandiri untuk mengimplementasikan studi kasus nyata mengenai perawatan kendaraan ke dalam sistem informasi berbasis web. Fokus utama aplikasi ini adalah pencatatan dan pemantauan perawatan motor matic, khususnya motor seperti Honda BeAT.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Gambaran Umum
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+MotoCare memungkinkan pengguna untuk memasukkan data motor dan riwayat perawatan sebelumnya, seperti ganti oli mesin, ganti oli gardan, servis CVT, pengecekan filter udara, penggantian busi, pengecekan rem, dan pengecekan ban.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Berdasarkan data kilometer dan riwayat servis yang dimasukkan, sistem akan menghitung jadwal perawatan berikutnya dan menampilkan status perawatan, seperti aman, mendekati jadwal servis, terlambat, atau belum ada data.
 
-## Learning Laravel
+## Fitur Utama
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* Input data motor
+* Pencatatan kilometer terkini
+* Pencatatan riwayat perawatan motor
+* Perhitungan otomatis jadwal servis berikutnya
+* Status rekomendasi perawatan
+* Tampilan interval perawatan dalam kilometer
+* Edit kilometer terkini
+* Edit data perawatan berdasarkan kategori
+* Tabel hasil perhitungan perawatan
+* Halaman histori input perawatan
+* Melihat kembali hasil perhitungan sebelumnya
+* Menghapus data histori perawatan
+* Navbar responsif
+* Tampilan antarmuka sederhana dan rapi
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Kategori Perawatan
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Sistem ini mendukung beberapa kategori perawatan motor, yaitu:
 
-## Agentic Development
+* Ganti oli mesin
+* Ganti oli gardan
+* Servis berkala
+* Servis CVT
+* Cek atau ganti filter udara
+* Ganti busi
+* Cek rem
+* Cek ban
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Status Perawatan
 
-```bash
-composer require laravel/boost --dev
+MotoCare menghitung setiap kategori perawatan dan menampilkan status sebagai berikut:
 
-php artisan boost:install
+| Status           | Keterangan                                                       |
+| ---------------- | ---------------------------------------------------------------- |
+| Aman             | Komponen masih berada dalam interval perawatan yang ideal        |
+| Mendekati Jadwal | Komponen sudah mendekati jadwal servis berikutnya                |
+| Terlambat        | Komponen sudah melewati batas interval perawatan                 |
+| Belum Ada Data   | Pengguna belum memasukkan data perawatan untuk kategori tersebut |
+
+## Teknologi yang Digunakan
+
+* Laravel
+* PHP
+* MySQL
+* Blade Template
+* HTML
+* CSS
+* JavaScript
+
+## Database
+
+Tabel utama yang digunakan dalam proyek ini adalah:
+
+```text
+maintenance_checks
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Tabel ini digunakan untuk menyimpan data motor, kilometer terkini, tanggal perawatan terakhir, kilometer saat perawatan terakhir, nama bengkel, biaya servis, dan catatan kondisi motor.
 
-## Contributing
+## Halaman Utama
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Halaman         | Keterangan                                              |
+| --------------- | ------------------------------------------------------- |
+| Home            | Halaman awal dan pengenalan aplikasi                    |
+| Input Perawatan | Form untuk memasukkan data motor dan riwayat perawatan  |
+| Result          | Menampilkan hasil perhitungan dan rekomendasi perawatan |
+| Histori         | Menampilkan daftar data perawatan yang pernah diinput   |
 
-## Code of Conduct
+## Instalasi
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Clone repository ini:
 
-## Security Vulnerabilities
+```bash
+git clone https://github.com/username-kamu/motocare.git
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Masuk ke folder project:
 
-## License
+```bash
+cd motocare
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Install dependency PHP:
+
+```bash
+composer install
+```
+
+Salin file environment:
+
+```bash
+cp .env.example .env
+```
+
+Generate application key:
+
+```bash
+php artisan key:generate
+```
+
+Atur konfigurasi database pada file `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=motocare_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Jalankan migration database:
+
+```bash
+php artisan migrate
+```
+
+Jalankan server Laravel:
+
+```bash
+php artisan serve
+```
+
+Buka aplikasi melalui browser:
+
+```text
+http://127.0.0.1:8000
+```
+
+## Akses Melalui Handphone
+
+Untuk mengakses aplikasi dari handphone dalam jaringan WiFi yang sama, jalankan Laravel dengan perintah:
+
+```bash
+php artisan serve --host=0.0.0.0 --port=8000
+```
+
+Kemudian buka browser di handphone dan akses menggunakan IP laptop:
+
+```text
+http://ip-laptop-kamu:8000
+```
+
+Contoh:
+
+```text
+http://192.168.1.10:8000
+```
+
+Catatan: laptop harus tetap menyala, terhubung ke jaringan yang sama, server Laravel harus berjalan, dan MySQL/XAMPP harus aktif.
+
+## Tujuan Proyek
+
+Proyek ini dibuat untuk melatih dan menunjukkan kemampuan dalam:
+
+* Routing Laravel
+* Pembuatan controller
+* Pengelolaan form
+* Validasi input
+* Migration database
+* Operasi CRUD
+* Blade templating
+* Logika perhitungan jadwal perawatan
+* Desain antarmuka web responsif
+
+## Batasan Saat Ini
+
+* Aplikasi belum menggunakan sistem login dan register.
+* Aplikasi masih difokuskan untuk penggunaan lokal atau single-user.
+* Interval perawatan masih ditentukan langsung di dalam controller.
+* Sistem masih difokuskan pada perawatan motor dan belum mendukung banyak jenis kendaraan.
+* Sistem belum memiliki notifikasi otomatis.
+
+## Rencana Pengembangan
+
+Beberapa fitur yang dapat dikembangkan ke depannya:
+
+* Menambahkan login dan register pengguna
+* Mendukung lebih dari satu motor dalam satu akun
+* Membuat master data jenis perawatan
+* Menambahkan dashboard analitik
+* Menampilkan total biaya servis
+* Menambahkan sistem notifikasi atau reminder
+* Upload foto nota servis
+* Export data ke PDF atau Excel
+* Deployment ke hosting online
+
+## Catatan Deployment
+
+MotoCare adalah aplikasi Laravel, sehingga membutuhkan hosting yang mendukung:
+
+* PHP
+* Composer
+* MySQL
+* Konfigurasi file `.env`
+* Permission folder `storage`
+
+Aplikasi ini tidak dapat dijalankan secara penuh di static hosting seperti GitHub Pages, karena Laravel membutuhkan backend PHP dan database.
+
+## Author
+
+Dikembangkan oleh Bryan Benedict sebagai proyek mandiri berbasis Laravel untuk portofolio.
