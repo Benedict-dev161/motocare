@@ -210,6 +210,7 @@ class MaintenanceCheckController extends Controller
             'name' => $item['name'],
             'last_date' => $lastDate ? Carbon::parse($lastDate)->format('d-m-Y') : '-',
             'last_km' => $lastKm !== null ? number_format($lastKm, 0, ',', '.') . ' km' : '-',
+            'interval_km' => number_format($item['interval_km'], 0, ',', '.') . ' km',
             'next_date' => $nextDate ? $nextDate->format('d-m-Y') : '-',
             'next_km' => $nextKm !== null ? number_format($nextKm, 0, ',', '.') . ' km' : '-',
             'remaining_km' => $remainingKm !== null ? number_format($remainingKm, 0, ',', '.') . ' km' : '-',

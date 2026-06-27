@@ -188,7 +188,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1100px;
+            min-width: 1250px;
         }
 
         th {
@@ -408,6 +408,7 @@
                         <tr>
                             <th>Perawatan</th>
                             <th>Terakhir</th>
+                            <th>Interval KM</th>
                             <th>Jadwal Berikutnya</th>
                             <th>Sisa KM</th>
                             <th>Sisa Hari</th>
@@ -427,6 +428,10 @@
                                 <td>
                                     {{ $result['last_date'] }}<br>
                                     {{ $result['last_km'] }}
+                                </td>
+
+                                <td>
+                                    Setiap {{ $result['interval_km'] }}
                                 </td>
 
                                 <td>
