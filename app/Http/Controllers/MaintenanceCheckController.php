@@ -80,10 +80,104 @@ class MaintenanceCheckController extends Controller
             ->with('success', 'Data histori berhasil dihapus.');
     }
 
+    public function updateCategory(Request $request, int $id, string $category)
+    {
+        $maintenanceCheck = MaintenanceCheck::findOrFail($id);
+
+        $categoryMap = [
+            'engine_oil' => [
+                'date_field' => 'last_engine_oil_date',
+                'km_field' => 'last_engine_oil_km',
+            ],
+            'gear_oil' => [
+                'date_field' => 'last_gear_oil_date',
+                'km_field' => 'last_gear_oil_km',
+            ],
+            'service' => [
+                'date_field' => 'last_service_date',
+                'km_field' => 'last_service_km',
+            ],
+            'cvt' => [
+                'date_field' => 'last_cvt_date',
+                'km_field' => 'last_cvt_km',
+            ],
+            'air_filter' => [
+                'date_field' => 'last_air_filter_date',
+                'km_field' => 'last_air_filter_km',
+            ],
+            'spark_plug' => [
+                'date_field' => 'last_spark_plug_date',
+                'km_field' => 'last_spark_plug_km',
+            ],
+            'brake_check' => [
+                'date_field' => 'last_brake_check_date',
+                'km_field' => 'last_brake_check_km',
+            ],
+            'tire_check' => [
+                'date_field' => 'last_tire_check_date',
+                'km_field' => 'last_tire_check_km',
+            ],
+        ];
+
+        if (! array_key_exists($category, $categoryMap)) {
+            abort(404);
+        }
+
+        $validated = $request->validate([
+            'last_date' => 'nullable|required_with:last_km|date',
+            'last_km' => 'nullable|required_with:last_date|integer|min:0|max:' . $maintenanceCheck->current_km,
+        ]);
+
+        $maintenanceCheck->update([
+            $categoryMap[$category]['date_field'] => $validated['last_date'] ?? null,
+            $categoryMap[$category]['km_field'] => $validated['last_km'] ?? null,
+        ]);
+
+        return redirect()
+            ->route('maintenance.result', $maintenanceCheck->id)
+            ->with('success', 'Data perawatan berhasil diperbarui.');
+    }
+    public function updateCurrentKm(Request $request, int $id)
+    {
+        $maintenanceCheck = MaintenanceCheck::findOrFail($id);
+
+        $lastKmValues = [
+            $maintenanceCheck->last_engine_oil_km,
+            $maintenanceCheck->last_gear_oil_km,
+            $maintenanceCheck->last_service_km,
+            $maintenanceCheck->last_cvt_km,
+            $maintenanceCheck->last_air_filter_km,
+            $maintenanceCheck->last_spark_plug_km,
+            $maintenanceCheck->last_brake_check_km,
+            $maintenanceCheck->last_tire_check_km,
+        ];
+
+        $validLastKmValues = array_filter($lastKmValues, function ($value) {
+            return $value !== null;
+        });
+
+        $minimumCurrentKm = count($validLastKmValues) > 0 ? max($validLastKmValues) : 0;
+
+        $validated = $request->validate([
+            'current_km' => 'required|integer|min:' . $minimumCurrentKm . '|max:999999',
+        ], [
+            'current_km.min' => 'KM terkini tidak boleh lebih kecil dari KM terakhir perawatan yang sudah tercatat.',
+        ]);
+
+        $maintenanceCheck->update([
+            'current_km' => $validated['current_km'],
+        ]);
+
+        return redirect()
+            ->route('maintenance.result', $maintenanceCheck->id)
+            ->with('success', 'Kilometer terkini berhasil diperbarui.');
+    }
+
     private function calculateMaintenance(MaintenanceCheck $check): array
     {
         $items = [
             [
+                'category' => 'engine_oil',
                 'name' => 'Ganti Oli Mesin',
                 'last_date' => $check->last_engine_oil_date,
                 'last_km' => $check->last_engine_oil_km,
@@ -93,6 +187,7 @@ class MaintenanceCheckController extends Controller
                 'benefit' => 'Menjaga pelumasan mesin, mengurangi gesekan, dan mencegah mesin cepat kasar.',
             ],
             [
+                'category' => 'gear_oil',
                 'name' => 'Ganti Oli Gardan',
                 'last_date' => $check->last_gear_oil_date,
                 'last_km' => $check->last_gear_oil_km,
@@ -102,6 +197,7 @@ class MaintenanceCheckController extends Controller
                 'benefit' => 'Melumasi gear transmisi belakang agar suara gardan tetap halus dan tidak cepat aus.',
             ],
             [
+                'category' => 'service',
                 'name' => 'Servis Berkala',
                 'last_date' => $check->last_service_date,
                 'last_km' => $check->last_service_km,
@@ -111,6 +207,7 @@ class MaintenanceCheckController extends Controller
                 'benefit' => 'Memastikan kondisi mesin, rem, ban, kelistrikan, dan komponen utama tetap aman.',
             ],
             [
+                'category' => 'cvt',
                 'name' => 'Servis CVT',
                 'last_date' => $check->last_cvt_date,
                 'last_km' => $check->last_cvt_km,
@@ -120,6 +217,7 @@ class MaintenanceCheckController extends Controller
                 'benefit' => 'Membersihkan debu CVT dan menjaga tarikan motor tetap halus.',
             ],
             [
+                'category' => 'air_filter',
                 'name' => 'Cek / Ganti Filter Udara',
                 'last_date' => $check->last_air_filter_date,
                 'last_km' => $check->last_air_filter_km,
@@ -129,6 +227,7 @@ class MaintenanceCheckController extends Controller
                 'benefit' => 'Menjaga udara masuk tetap bersih agar pembakaran stabil dan motor tidak boros.',
             ],
             [
+                'category' => 'spark_plug',
                 'name' => 'Ganti Busi',
                 'last_date' => $check->last_spark_plug_date,
                 'last_km' => $check->last_spark_plug_km,
@@ -138,6 +237,7 @@ class MaintenanceCheckController extends Controller
                 'benefit' => 'Menjaga pembakaran tetap stabil, mencegah brebet, dan memudahkan starter.',
             ],
             [
+                'category' => 'brake_check',
                 'name' => 'Cek Rem',
                 'last_date' => $check->last_brake_check_date,
                 'last_km' => $check->last_brake_check_km,
@@ -147,6 +247,7 @@ class MaintenanceCheckController extends Controller
                 'benefit' => 'Menjaga pengereman tetap aman dan mencegah kampas rem habis tanpa disadari.',
             ],
             [
+                'category' => 'tire_check',
                 'name' => 'Cek Ban',
                 'last_date' => $check->last_tire_check_date,
                 'last_km' => $check->last_tire_check_km,
@@ -207,9 +308,12 @@ class MaintenanceCheckController extends Controller
         }
 
         return [
+            'category' => $item['category'],
             'name' => $item['name'],
             'last_date' => $lastDate ? Carbon::parse($lastDate)->format('d-m-Y') : '-',
             'last_km' => $lastKm !== null ? number_format($lastKm, 0, ',', '.') . ' km' : '-',
+            'input_date_value' => $lastDate ? Carbon::parse($lastDate)->format('Y-m-d') : '',
+            'input_km_value' => $lastKm ?? '',
             'interval_km' => number_format($item['interval_km'], 0, ',', '.') . ' km',
             'next_date' => $nextDate ? $nextDate->format('d-m-Y') : '-',
             'next_km' => $nextKm !== null ? number_format($nextKm, 0, ',', '.') . ' km' : '-',

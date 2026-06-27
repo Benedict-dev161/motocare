@@ -6,6 +6,7 @@
     <title>Hasil Perhitungan Perawatan - MotoCare</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -334,8 +335,175 @@
                 padding: 8px 10px;
             }
         }
+        .editable-input {
+            width: 150px;
+            padding: 9px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 8px;
+            outline: none;
+        }
+
+        .editable-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .editable-input:disabled {
+            background: transparent;
+            border-color: transparent;
+            color: #374151;
+            opacity: 1;
+            padding-left: 0;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-edit,
+        .btn-save {
+            border: none;
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-edit {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .btn-edit:hover {
+            background: #bfdbfe;
+        }
+
+        .btn-save {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-save:hover {
+            background: #1d4ed8;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 15px 18px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            font-weight: 600;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 15px 18px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+        }
+
+        .alert-error ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .current-km-form {
+            margin-top: 8px;
+        }
+
+        .current-km-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #111827;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .current-km-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .current-km-input:disabled {
+            background: transparent;
+            border-color: transparent;
+            padding-left: 0;
+            color: #111827;
+            opacity: 1;
+        }
+
+        .current-km-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-km-edit,
+        .btn-km-save {
+            border: none;
+            padding: 8px 11px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-km-edit {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .btn-km-edit:hover {
+            background: #bfdbfe;
+        }
+
+        .btn-km-save {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-km-save:hover {
+            background: #1d4ed8;
+        }
+
     </style>
 </head>
+<script>
+    function enableEdit(button) {
+        const row = button.closest('tr');
+        const inputs = row.querySelectorAll('.editable-input');
+        const saveButton = row.querySelector('.btn-save');
+
+        inputs.forEach(function(input) {
+            input.disabled = false;
+        });
+
+        button.style.display = 'none';
+        saveButton.style.display = 'inline-block';
+    }
+</script>
 <body>
 
     <nav class="navbar">
@@ -369,6 +537,22 @@
                 mendekati jadwal servis, atau sudah terlambat.
             </p>
         </div>
+        @if (session('success'))
+            <div class="alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        
+        @if ($errors->any())
+            <div class="alert-error">
+                <strong>Data belum valid.</strong>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <div class="summary-grid">
             <div class="summary-card">
@@ -388,7 +572,34 @@
 
             <div class="summary-card">
                 <span>Kilometer Saat Ini</span>
-                <strong>{{ number_format($maintenanceCheck->current_km, 0, ',', '.') }} km</strong>
+
+                <form
+                    action="{{ route('maintenance.updateCurrentKm', $maintenanceCheck->id) }}"
+                    method="POST"
+                    class="current-km-form"
+                >
+                    @csrf
+                    @method('PATCH')
+
+                    <input
+                        type="number"
+                        name="current_km"
+                        value="{{ $maintenanceCheck->current_km }}"
+                        class="current-km-input"
+                        disabled
+                        required
+                    >
+
+                    <div class="current-km-actions">
+                        <button type="button" class="btn-km-edit" onclick="enableCurrentKmEdit(this)">
+                            Edit KM
+                        </button>
+                    
+                        <button type="submit" class="btn-km-save" style="display: none;">
+                            Simpan
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -415,6 +626,7 @@
                             <th>Status</th>
                             <th>Rekomendasi</th>
                             <th>Manfaat</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
 
@@ -424,34 +636,75 @@
                                 <td>
                                     <div class="maintenance-name">{{ $result['name'] }}</div>
                                 </td>
-
+                            
                                 <td>
-                                    {{ $result['last_date'] }}<br>
-                                    {{ $result['last_km'] }}
+                                    <label class="input-label">Tanggal</label>
+                                    <input
+                                        type="date"
+                                        name="last_date"
+                                        value="{{ $result['input_date_value'] }}"
+                                        class="editable-input"
+                                        form="update-form-{{ $loop->index }}"
+                                        disabled
+                                    >
+                                
+                                    <label class="input-label">KM</label>
+                                    <input
+                                        type="number"
+                                        name="last_km"
+                                        value="{{ $result['input_km_value'] }}"
+                                        class="editable-input"
+                                        form="update-form-{{ $loop->index }}"
+                                        disabled
+                                    >
                                 </td>
-
+                            
                                 <td>
                                     Setiap {{ $result['interval_km'] }}
                                 </td>
-
+                            
                                 <td>
                                     {{ $result['next_date'] }}<br>
                                     {{ $result['next_km'] }}
                                 </td>
-
+                            
                                 <td>{{ $result['remaining_km'] }}</td>
-
+                            
                                 <td>{{ $result['remaining_days'] }}</td>
-
+                            
                                 <td>
                                     <span class="status {{ $result['status_class'] }}">
                                         {{ $result['status'] }}
                                     </span>
                                 </td>
-
+                            
                                 <td>{{ $result['recommendation'] }}</td>
-
+                            
                                 <td>{{ $result['benefit'] }}</td>
+                            
+                                <td>
+                                    <form
+                                        id="update-form-{{ $loop->index }}"
+                                        action="{{ route('maintenance.updateCategory', [
+                                            'id' => $maintenanceCheck->id,
+                                            'category' => $result['category']
+                                        ]) }}"
+                                        method="POST"
+                                    >
+                                        @csrf
+                                        @method('PATCH')
+                                
+                                        <div class="action-buttons">
+                                            <button type="button" class="btn-edit" onclick="enableEdit(this)">
+                                                Edit
+                                            </button>
+                                        
+                                            <button type="submit" class="btn-save" style="display: none;">
+                                                Simpan
+                                            </button>
+                                        </div>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -464,6 +717,18 @@
             <a href="/" class="btn-primary">Kembali ke Home</a>
         </div>
     </main>
+<script>
+    function enableCurrentKmEdit(button) {
+        const form = button.closest('form');
+        const input = form.querySelector('.current-km-input');
+        const saveButton = form.querySelector('.btn-km-save');
 
+        input.disabled = false;
+        input.focus();
+
+        button.style.display = 'none';
+        saveButton.style.display = 'inline-block';
+    }
+</script>
 </body>
 </html>

@@ -21,3 +21,9 @@ Route::get('/maintenance/{id}/result', [MaintenanceCheckController::class, 'resu
 
 Route::delete('/maintenance/{id}', [MaintenanceCheckController::class, 'destroy'])
     ->name('maintenance.destroy');
+
+Route::patch('/maintenance/{id}/category/{category}', [MaintenanceCheckController::class, 'updateCategory'])
+    ->name('maintenance.updateCategory');
+
+Route::patch('/maintenance/{id}/current-km', [MaintenanceCheckController::class, 'updateCurrentKm'])
+    ->name('maintenance.updateCurrentKm');
