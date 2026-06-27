@@ -25,23 +25,42 @@
 
         .navbar {
             width: 100%;
-            padding: 20px 8%;
-            background: #ffffff;
+            padding: 18px 8%;
+            background: rgba(255, 255, 255, 0.96);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
             position: fixed;
             top: 0;
             left: 0;
             z-index: 999;
+            backdrop-filter: blur(10px);
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2563eb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             text-decoration: none;
+            font-size: 26px;
+            font-weight: 800;
+            color: #2563eb;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: #2563eb;
+            color: #ffffff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            font-weight: 800;
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
         }
 
         .back-link {
@@ -261,29 +280,57 @@
                 margin-left: 20px;
                 margin-top: 8px;
             }
+            
+            .nav-links {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
             .nav-links a {
                 text-decoration: none;
                 color: #374151;
-                margin-left: 25px;
                 font-size: 15px;
-                font-weight: 600;
+                font-weight: 700;
+                padding: 10px 16px;
+                border-radius: 10px;
+                transition: all 0.2s ease;
             }
-            
+
             .nav-links a:hover {
                 color: #2563eb;
+                background: #eff6ff;
             }
+
+            .nav-links a.active {
+                color: #ffffff;
+                background: #2563eb;
+                box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+            }
+
         }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="{{ route('home') }}" class="logo">MotoCare</a>
-        
+        <a href="{{ route('home') }}" class="logo">
+            <span class="logo-icon">M</span>
+            <span>MotoCare</span>
+        </a>
+    
         <div class="nav-links">
-            <a href="{{ route('home') }}#fitur">Fitur</a>
-            <a href="{{ route('maintenance.create') }}">Perawatan</a>
-            <a href="{{ route('maintenance.history') }}">Histori</a>
+            <a href="{{ route('home') }}#fitur">
+                Fitur
+            </a>
+        
+            <a href="{{ route('maintenance.create') }}" class="{{ request()->routeIs('maintenance.create') ? 'active' : '' }}">
+                Perawatan
+            </a>
+        
+            <a href="{{ route('maintenance.history') }}" class="{{ request()->routeIs('maintenance.history') ? 'active' : '' }}">
+                Histori
+            </a>
         </div>
     </nav>
 

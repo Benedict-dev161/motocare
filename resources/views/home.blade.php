@@ -294,12 +294,23 @@
 <body>
 
     <nav class="navbar">
-        <div class="logo">MotoCare</div>
-        
+        <a href="{{ route('home') }}" class="logo">
+            <span class="logo-icon">M</span>
+            <span>MotoCare</span>
+        </a>
+    
         <div class="nav-links">
-            <a href="#fitur">Fitur</a>
-            <a href="{{ route('maintenance.create') }}">Perawatan</a>
-            <a href="{{ route('maintenance.history') }}">Histori</a>
+            <a href="#fitur">
+                Fitur
+            </a>
+        
+            <a href="{{ route('maintenance.create') }}">
+                Perawatan
+            </a>
+        
+            <a href="{{ route('maintenance.history') }}">
+                Histori
+            </a>
         </div>
     </nav>
 

@@ -44,16 +44,32 @@
             text-decoration: none;
         }
 
-        .nav-link {
-            text-decoration: none;
-            color: #374151;
-            font-size: 15px;
-            font-weight: 600;
-        }
+        .nav-links {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
 
-        .nav-link:hover {
-            color: #2563eb;
-        }
+            .nav-links a {
+                text-decoration: none;
+                color: #374151;
+                font-size: 15px;
+                font-weight: 700;
+                padding: 10px 16px;
+                border-radius: 10px;
+                transition: all 0.2s ease;
+            }
+
+            .nav-links a:hover {
+                color: #2563eb;
+                background: #eff6ff;
+            }
+
+            .nav-links a.active {
+                color: #ffffff;
+                background: #2563eb;
+                box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+            }
 
         .container {
             max-width: 1200px;
@@ -276,12 +292,23 @@
 <body>
 
     <nav class="navbar">
-        <a href="{{ route('home') }}" class="logo">MotoCare</a>
-        
+        <a href="{{ route('home') }}" class="logo">
+            <span class="logo-icon">M</span>
+            <span>MotoCare</span>
+        </a>
+    
         <div class="nav-links">
-            <a href="{{ route('home') }}#fitur">Fitur</a>
-            <a href="{{ route('maintenance.create') }}">Perawatan</a>
-            <a href="{{ route('maintenance.history') }}">Histori</a>
+            <a href="{{ route('home') }}#fitur">
+                Fitur
+            </a>
+        
+            <a href="{{ route('maintenance.create') }}" class="{{ request()->routeIs('maintenance.create') ? 'active' : '' }}">
+                Perawatan
+            </a>
+        
+            <a href="{{ route('maintenance.history') }}" class="{{ request()->routeIs('maintenance.history') ? 'active' : '' }}">
+                Histori
+            </a>
         </div>
     </nav>
 
