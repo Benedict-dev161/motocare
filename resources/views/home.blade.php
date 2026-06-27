@@ -13,13 +13,18 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
-        html, body {
-        overflow-x: hidden;
+        html {
+            scroll-behavior: smooth;
         }
-        
+
+        html, body {
+            overflow-x: hidden;
+        }
+
         body {
             background: #f4f7fb;
             color: #1f2937;
+            padding-top: 90px;
         }
 
         .navbar {
@@ -30,9 +35,10 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 10;
+            left: 0;
+            z-index: 999;
         }
 
         .logo {
@@ -289,11 +295,11 @@
 
     <nav class="navbar">
         <div class="logo">MotoCare</div>
-
+        
         <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Fitur</a>
-            <a href="#">Perawatan</a>
+            <a href="#fitur">Fitur</a>
+            <a href="{{ route('maintenance.create') }}">Perawatan</a>
+            <a href="{{ route('maintenance.history') }}">Histori</a>
         </div>
     </nav>
 

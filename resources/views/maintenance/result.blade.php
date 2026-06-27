@@ -20,6 +20,7 @@
         body {
             background: #f4f7fb;
             color: #111827;
+            padding-top: 90px;
         }
 
         .navbar {
@@ -30,6 +31,10 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
         }
 
         .logo {
@@ -271,8 +276,13 @@
 <body>
 
     <nav class="navbar">
-        <a href="/" class="logo">MotoCare</a>
-        <a href="{{ route('maintenance.create') }}" class="nav-link">Input Ulang</a>
+        <a href="{{ route('home') }}" class="logo">MotoCare</a>
+        
+        <div class="nav-links">
+            <a href="{{ route('home') }}#fitur">Fitur</a>
+            <a href="{{ route('maintenance.create') }}">Perawatan</a>
+            <a href="{{ route('maintenance.history') }}">Histori</a>
+        </div>
     </nav>
 
     <main class="container">

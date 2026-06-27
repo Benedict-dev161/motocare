@@ -64,6 +64,22 @@ class MaintenanceCheckController extends Controller
         return view('maintenance.result', compact('maintenanceCheck', 'results'));
     }
 
+    public function history()
+    {
+        $maintenanceChecks = MaintenanceCheck::latest()->get();
+        return view('maintenance.history', compact('maintenanceChecks'));
+    }
+
+    public function destroy($id)
+    {
+        $maintenanceCheck = MaintenanceCheck::findOrFail($id);
+        $maintenanceCheck->delete();
+
+        return redirect()
+            ->route('maintenance.history')
+            ->with('success', 'Data histori berhasil dihapus.');
+    }
+
     private function calculateMaintenance(MaintenanceCheck $check): array
     {
         $items = [
