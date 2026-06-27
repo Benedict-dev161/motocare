@@ -51,7 +51,7 @@ MotoCare menghitung setiap kategori perawatan dan menampilkan status sebagai ber
 | Terlambat        | Komponen sudah melewati batas interval perawatan                 |
 | Belum Ada Data   | Pengguna belum memasukkan data perawatan untuk kategori tersebut |
 
-## Teknologi yang Digunakan
+## Yang Digunakan
 
 * Laravel
 * PHP
