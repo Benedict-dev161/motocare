@@ -25,23 +25,48 @@
 
         .navbar {
             width: 100%;
-            padding: 20px 8%;
-            background: #ffffff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            background: rgba(255, 255, 255, 0.96);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
             position: fixed;
             top: 0;
             left: 0;
             z-index: 999;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-inner {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2563eb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             text-decoration: none;
+            font-size: 26px;
+            font-weight: 800;
+            color: #2563eb;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: #2563eb;
+            color: #ffffff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            font-weight: 800;
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
         }
 
         .nav-links {
@@ -265,8 +290,8 @@
         }
 
         @media (max-width: 600px) {
-            .navbar {
-                padding: 18px 24px;
+            .navbar-inner {
+                padding: 16px 24px;
             }
 
             .summary-grid {
@@ -286,29 +311,49 @@
                 width: 100%;
                 text-align: center;
             }
+            .navbar-inner {
+                padding: 16px 24px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .logo-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+
+            .nav-links {
+                gap: 6px;
+            }
+
+            .nav-links a {
+                font-size: 13px;
+                padding: 8px 10px;
+            }
         }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="{{ route('home') }}" class="logo">
-            <span class="logo-icon">M</span>
-            <span>MotoCare</span>
-        </a>
-    
-        <div class="nav-links">
-            <a href="{{ route('home') }}#fitur">
-                Fitur
+        <div class="navbar-inner">
+            <a href="{{ route('home') }}" class="logo">
+                <span class="logo-icon">M</span>
+                <span>MotoCare</span>
             </a>
-        
-            <a href="{{ route('maintenance.create') }}" class="{{ request()->routeIs('maintenance.create') ? 'active' : '' }}">
-                Perawatan
-            </a>
-        
-            <a href="{{ route('maintenance.history') }}" class="{{ request()->routeIs('maintenance.history') ? 'active' : '' }}">
-                Histori
-            </a>
+
+            <div class="nav-links">
+                <a href="{{ route('maintenance.create') }}" class="{{ request()->routeIs('maintenance.create') || request()->routeIs('maintenance.result') ? 'active' : '' }}">
+                    Perawatan
+                </a>
+
+                <a href="{{ route('maintenance.history') }}" class="{{ request()->routeIs('maintenance.history') ? 'active' : '' }}">
+                    Histori
+                </a>
+            </div>
         </div>
     </nav>
 
